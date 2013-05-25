@@ -12,10 +12,6 @@ class SearchInSortedTest(unittest.TestCase):
 		self.Case4 = [2, 2, 2, 2]
 		self.Case5 = [2, 2, 2, 5, 5]
 		
-	def testLinearSearch(self):
-		print("Testing Linear Search")
-		self.DoTestSearchInSorted(LinearSearchInSorted)
-		
 	def testBinarySearch(self):
 		print("Testing Binary Search")
 		self.DoTestSearchInSorted(BinarySearchInSorted, False)
@@ -23,7 +19,11 @@ class SearchInSortedTest(unittest.TestCase):
 	def testBinarySearchStable(self):
 		print("Testing Binary Search Stable")
 		self.DoTestSearchInSorted(BinarySearchInSortedStable)
-		
+	
+	def testBinarySearchNonRecursive(self):
+		print("Testing Binary Search Non Recursive")
+		self.DoTestSearchInSorted(BinarySearchInSortedNonRecursive, False)
+			
 	def DoTestSearchInSorted(self, methodName, stable=True):
 		print("Executing Case0")
 		self.assertEqual(-1, methodName(self.Case0, 3))
@@ -62,20 +62,6 @@ class SearchInSortedTest(unittest.TestCase):
 		
 """
 Best Case : O(1)
-Average Case : O(n)
-Worst Case : O(n)
-"""		
-def LinearSearchInSorted(inputArray, elementToSearch):
-	index = -1
-	size = len(inputArray)
-	for i in range(size):
-			if (elementToSearch == inputArray[i]):
-				index = i
-				break
-	return index
-
-"""
-Best Case : O(1)
 Average Case : O(logn)
 Worst Case : O(n)
 """	
@@ -83,25 +69,23 @@ def BinarySearchInSorted(inputArray, elementToSearch):
 	return BinarySearchRecursive(inputArray, elementToSearch, 0, len(inputArray) - 1)
 	
 def BinarySearchRecursive(inputArray, elementToSearch, startIndex, endIndex):
-	if len(inputArray) < 1:
-		return -1;
+	index = -1
 	
-	if(endIndex < startIndex):
-		return -1;
+	if(startIndex <= endIndex):
+		mid = int((startIndex + endIndex) / 2)
+		
+		if(elementToSearch < inputArray[mid]):
+			index = BinarySearchRecursive(inputArray, elementToSearch, startIndex, mid - 1)
+		elif(elementToSearch == inputArray[mid]):
+			index = mid
+		else:
+			index = BinarySearchRecursive(inputArray, elementToSearch, mid + 1, endIndex)
 	
-	mid = int((startIndex + endIndex) / 2)
-	
-	if(elementToSearch < inputArray[mid]):
-		return BinarySearchRecursive(inputArray, elementToSearch, startIndex, mid - 1)
-	elif elementToSearch == inputArray[mid]:
-		return mid
-	else:
-		return BinarySearchRecursive(inputArray, elementToSearch, mid + 1, endIndex)
-	
-	return -1
+	return index
 
 """
-This is not a different solution, it is just stable version of BinarySearchInSorted
+This is not a different solution, it is just stable version(lowest Index for repeated element)
+ of BinarySearchInSorted
 Best Case : O(1)
 Average Case : O(logn)
 Worst Case : O(n)
@@ -110,26 +94,46 @@ def BinarySearchInSortedStable(inputArray, elementToSearch):
 	return BinarySearchRecursiveStable(inputArray, elementToSearch, 0, len(inputArray) - 1)
 
 def BinarySearchRecursiveStable(inputArray, elementToSearch, startIndex, endIndex):
-	if len(inputArray) < 1:
-		return -1;
+	index = -1
 	
-	if(endIndex < startIndex):
-		return -1;
+	if(startIndex <= endIndex):	
+		mid = int((startIndex + endIndex) / 2)
+		
+		if(elementToSearch < inputArray[mid]):
+			index = BinarySearchRecursive(inputArray, elementToSearch, startIndex, mid - 1)
+		elif elementToSearch == inputArray[mid]:
+			#Get the lowest index of element which is repeated
+			while((mid > startIndex) and (elementToSearch == inputArray[mid - 1])):
+				mid = mid - 1
+			index = mid
+		else:
+			index = BinarySearchRecursive(inputArray, elementToSearch, mid + 1, endIndex)
 	
-	mid = int((startIndex + endIndex) / 2)
+	return index	
+
+"""
+Best Case : O(1)
+Average Case : O(logn)
+Worst Case : O(n)
+"""	
+def BinarySearchInSortedNonRecursive(inputArray, elementToSearch):
+	startIndex = 0
+	endIndex = len(inputArray) - 1
 	
-	if(elementToSearch < inputArray[mid]):
-		return BinarySearchRecursive(inputArray, elementToSearch, startIndex, mid - 1)
-	elif elementToSearch == inputArray[mid]:
-		#Get the lowest index of element which is repeated
-		while((mid > startIndex) and (elementToSearch == inputArray[mid - 1])):
-			mid = mid - 1;
+	index = -1
+	
+	while(startIndex <= endIndex):
+		mid = int((startIndex + endIndex) / 2)
+		
+		if(elementToSearch == inputArray[mid]):
+			index = mid
+			break
+		elif(elementToSearch < inputArray[mid]):
+			endIndex = mid - 1
+		else:
+			startIndex = mid + 1
 			
-		return mid
-	else:
-		return BinarySearchRecursive(inputArray, elementToSearch, mid + 1, endIndex)
-	
-	return -1	
+	return index
 
 if __name__ == '__main__':
 	unittest.main()
