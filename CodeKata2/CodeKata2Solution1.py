@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 import unittest
 
-""" Class to test search in sorted
+""" 
+Problem : http://codekata.pragprog.com/2007/01/kata_two_karate.html
+Class to test search in sorted
 """
 class SearchInSortedTest(unittest.TestCase):		
 	def setUp(self):
@@ -63,7 +65,7 @@ class SearchInSortedTest(unittest.TestCase):
 """
 Best Case : O(1)
 Average Case : O(logn)
-Worst Case : O(n)
+Worst Case : O(logn)
 """	
 def BinarySearchInSorted(inputArray, elementToSearch):
 	return BinarySearchRecursive(inputArray, elementToSearch, 0, len(inputArray) - 1)
@@ -88,7 +90,7 @@ This is not a different solution, it is just stable version(lowest Index for rep
  of BinarySearchInSorted
 Best Case : O(1)
 Average Case : O(logn)
-Worst Case : O(n)
+Worst Case : O(logn)
 """	
 def BinarySearchInSortedStable(inputArray, elementToSearch):
 	return BinarySearchRecursiveStable(inputArray, elementToSearch, 0, len(inputArray) - 1)
@@ -114,7 +116,7 @@ def BinarySearchRecursiveStable(inputArray, elementToSearch, startIndex, endInde
 """
 Best Case : O(1)
 Average Case : O(logn)
-Worst Case : O(n)
+Worst Case : O(logn)
 """	
 def BinarySearchInSortedNonRecursive(inputArray, elementToSearch):
 	startIndex = 0
