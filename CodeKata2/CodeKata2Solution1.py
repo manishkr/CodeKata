@@ -26,6 +26,10 @@ class SearchInSortedTest(unittest.TestCase):
 		print("Testing Binary Search Non Recursive")
 		self.DoTestSearchInSorted(BinarySearchInSortedNonRecursive, False)
 			
+	def testBinarySearchViaSlice(self):
+		print("Testing Binary Search Recursive via array slice")
+		self.DoTestSearchInSorted(BinarySearchRecursiveViaSlice, False)	
+			
 	def DoTestSearchInSorted(self, methodName, stable=True):
 		print("Executing Case0")
 		self.assertEqual(-1, methodName(self.Case0, 3))
@@ -137,5 +141,30 @@ def BinarySearchInSortedNonRecursive(inputArray, elementToSearch):
 			
 	return index
 
+"""
+As Python slicing copy the array and make new one, this need extra space and complexity due to copy
+Although searching number of comparision will be same, but copying complexity will be in term of 
+n/2 + n/4 + n/8...i.e. O(n)
+"""
+def BinarySearchRecursiveViaSlice(inputArray, elementToSearch):
+	startIndex = 0
+	endIndex = len(inputArray) - 1
+	
+	index = -1
+	
+	if(startIndex <= endIndex):
+		mid = int((startIndex + endIndex) / 2)
+		
+		if(elementToSearch == inputArray[mid]):
+			index = mid
+		elif(elementToSearch < inputArray[mid]):
+			index = BinarySearchRecursiveViaSlice(inputArray[startIndex : mid], elementToSearch)
+		else:
+			tempIndex = BinarySearchRecursiveViaSlice(inputArray[(mid + 1) : (endIndex + 1)], elementToSearch)
+			if(tempIndex > -1):
+				index  = mid + 1 + tempIndex
+	
+	return index
+	
 if __name__ == '__main__':
 	unittest.main()
