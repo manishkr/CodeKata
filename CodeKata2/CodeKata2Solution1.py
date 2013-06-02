@@ -94,7 +94,7 @@ This is not a different solution, it is just stable version(lowest Index for rep
  of BinarySearchInSorted
 Best Case : O(1)
 Average Case : O(logn)
-Worst Case : O(logn)
+Worst Case : O(n)
 """	
 def BinarySearchInSortedStable(inputArray, elementToSearch):
 	return BinarySearchRecursiveStable(inputArray, elementToSearch, 0, len(inputArray) - 1)
@@ -144,7 +144,7 @@ def BinarySearchInSortedNonRecursive(inputArray, elementToSearch):
 """
 As Python slicing copy the array and make new one, this need extra space and complexity due to copy
 Although searching number of comparision will be same, but copying complexity will be in term of 
-n/2 + n/4 + n/8...i.e. O(n)
+n/2 + n/4 + n/8...	i.e. O(n)
 """
 def BinarySearchRecursiveViaSlice(inputArray, elementToSearch):
 	startIndex = 0
