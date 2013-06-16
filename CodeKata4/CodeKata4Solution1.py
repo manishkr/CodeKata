@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-
+"""
+Problem : http://codekata.pragprog.com/2007/01/kata_four_data_.html
+"""
 import sys
 """from enum import Enum"""
 
